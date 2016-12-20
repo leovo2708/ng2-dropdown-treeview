@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <base href="/">
+    <title>Angular With Webpack</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<% htmlWebpackPlugin.files.css.forEach(function(css){ %>
+	<link href="<%= css%>" rel="stylesheet"/>
+	<% }) %>
+</head>
+<body>
+    <leo-app>Loading...</leo-app>
+	<% htmlWebpackPlugin.files.js.forEach(function(js){ %>
+	<script src="<%= js%>"></script>
+	<% }) %>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# Node generated files
+node_modules
+npm-debug.log
+debug.log
+
+# Visual Studio Code
+.editorconfig
+.vscode
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# Ignored files
+demo
+config
+webpack.config.js
+tsconfig.json
+tsconfig-ngc.json
+tslint.json
+*.scss
+*.css
+*.ts
+!*.d.ts
+!*.metadata.json
