@@ -1,18 +1,20 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-        "baseUrl": ".",
         "target": "es5",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "removeComments": false,
-        "noImplicitAny": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "noEmitOnError": true,
         "lib": ["es2015", "dom"],
+        "module": "es2015",
+        "moduleResolution": "node",
+        "declaration": true,
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "stripInternal": true,
+        "sourceMap": true,
+        "inlineSources": true,
+        "skipLibCheck": true,
+        "paths": {
+            "ng2-dropdown-treeview": ["index"]
+        },
         "typeRoots": [
             "node_modules/@types"
         ],
@@ -20,16 +22,17 @@
             "jasmine",
             "karma-fixture",
             "node"
-        ],
-        "paths": {
-            "ng2-dropdown-treeview": ["index"]
-        }
+        ]
     },
-    "include": [
-        "demo/**/*"
+    "files": [
+        "index.ts"
     ],
     "exclude": [
-        "node_modules",
-        "src"
-    ]
+        "demo",
+        "node_modules"
+    ],
+    "angularCompilerOptions": {
+        "strictMetadataEmit": true,
+        "skipTemplateCodegen": true
+    }
 }
