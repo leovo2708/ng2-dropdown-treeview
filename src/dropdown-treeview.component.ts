@@ -221,6 +221,9 @@ export class DropdownTreeviewComponent implements OnChanges {
     onAllCheckedChange(checked: boolean) {
         this.filterItems.forEach(item => {
             item.updateCheckedRecursive(checked);
+            if (item instanceof FilterTreeItem) {
+                item.updateRefChecked();
+            }
         });
 
         this.onAfterSelectedChange();
