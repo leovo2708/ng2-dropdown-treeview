@@ -1,13 +1,15 @@
 {
     "name": "ng2-dropdown-treeview",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "An Angular 2 checkable dropdown treeview component with multiple selection",
     "scripts": {
         "sass": "node-sass src -o src --output-style=expanded --indent-width=4",
         "prepublish": "npm run ngc && npm run build",
         "ngc": "ngc -p tsconfig.json",
         "build": "webpack --config config/webpack.lib.js",
+        "lint": "tslint \"src/**/*.ts\" -e \"src/**/*.d.ts\"",
         "test": "karma start config/karma.conf.js",
+        "demo:lint": "tslint \"demo/**/*.ts\"",
         "demo:dev": "webpack-dev-server --inline --progress --open --port 12346 --config demo/config/webpack.dev.js",
         "demo:prod": "webpack --config demo/config/webpack.prod.js --progress --profile --bail"
     },

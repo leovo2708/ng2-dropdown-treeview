@@ -144,7 +144,7 @@ describe('DropdownTreeviewComponent', () => {
                 expect(itemCheckBoxes[0].nativeElement.checked).toBeTruthy();
                 eventHelper.raiseClickEvent(itemCheckBoxes[0].nativeElement).then(() => {
                     expect(itemCheckBoxes[0].nativeElement.checked).toBeTruthy();
-                })
+                });
             });
         }));
 
@@ -179,7 +179,7 @@ describe('DropdownTreeviewComponent', () => {
                     itemCheckBoxes = debugElement.queryAll(By.css('.treeview-container input'));
                     expect(itemCheckBoxes.filter(item => item.nativeElement.checked).length === 0).toBeTruthy('No checkboxes are checked');
                     expect(dropdownButton.nativeElement).toHaveTextContent('Select options');
-                })
+                });
             });
         }));
     });
@@ -192,7 +192,11 @@ describe('DropdownTreeviewComponent', () => {
                 noSelectText: 'Select categories',
                 moreSelectText: 'categories selected'
             };
-            componentInstance.items = [_.cloneDeep(childrenCategory), _.cloneDeep(teenCategory), _.cloneDeep(magazineCategory), _.cloneDeep(otherCategory)];
+            componentInstance.items = [
+                _.cloneDeep(childrenCategory),
+                _.cloneDeep(teenCategory),
+                _.cloneDeep(magazineCategory),
+                _.cloneDeep(otherCategory)];
             fixture.detectChanges();
         });
 
@@ -248,7 +252,8 @@ describe('DropdownTreeviewComponent', () => {
                     eventHelper.raiseClickEvent(usaCheckBox.nativeElement).then(() => {
                         eventHelper.raiseInputEvent(filterInput.nativeElement, '').then(() => {
                             itemCheckBoxes = debugElement.queryAll(By.css('.treeview-container input'));
-                            let cultureCheckBox = itemCheckBoxes.filter(item => _.trim(item.parent.nativeElement.textContent) === 'Culture')[0];
+                            let cultureCheckBox = itemCheckBoxes.filter(item =>
+                                _.trim(item.parent.nativeElement.textContent) === 'Culture')[0];
                             expect(cultureCheckBox.nativeElement.checked).toBeFalsy();
                         });
                     });

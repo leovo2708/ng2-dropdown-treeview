@@ -2,12 +2,12 @@
 import * as _ from 'lodash';
 
 export class TreeItem {
+    private internalDisabled = false;
+    private internalChecked = true;
     text: string;
     value: any;
     collapsed = false;
     children?: TreeItem[];
-    private internalDisabled = false;
-    private internalChecked = true;
 
     constructor(text: string, value: any = undefined) {
         this.text = text;

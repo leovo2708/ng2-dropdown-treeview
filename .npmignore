@@ -14,6 +14,7 @@ Thumbs.db
 # Ignored files
 demo
 config
+typings
 webpack.config.js
 tsconfig.json
 tsconfig-ngc.json
