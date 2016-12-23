@@ -4,9 +4,9 @@ import * as _ from 'lodash';
 export class TreeItem {
     text: string;
     value: any;
-    private internalDisabled = false;
     collapsed = false;
     children?: TreeItem[];
+    private internalDisabled = false;
     private internalChecked = true;
 
     constructor(text: string, value: any = undefined) {

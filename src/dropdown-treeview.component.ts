@@ -83,7 +83,7 @@ export let DefaultConfig: DropdownTreeviewConfig = {
                     <div class="col-xs-12">
                         <label *ngIf="config.isShowAllCheckBox" class="form-check-label dropdown-item-all">
                             <input type="checkbox" class="form-check-input"
-                            [(ngModel)]="allChecked" (ngModelChange)="onAllCheckedChange($event)" />
+                            [(ngModel)]="allItem.checked" (ngModelChange)="onAllCheckedChange($event)" />
                             {{allItem.text}}
                         </label>
                         <label *ngIf="config.isShowCollapseExpand" class="form-check-label pull-right dropdown-item-collapse-expand">
@@ -154,7 +154,6 @@ export class DropdownTreeviewComponent implements OnChanges {
     text = this.config.allText;
     filterText: string;
     filterItems: TreeItem[];
-    allChecked: true;
 
     @HostListener('keyup.esc') keyupEsc() {
         this.isOpen = false;

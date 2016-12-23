@@ -1,21 +1,23 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
+        "baseUrl": ".",
         "target": "es5",
-        "lib": ["es2015", "dom"],
         "module": "es2015",
         "moduleResolution": "node",
-        "declaration": true,
-        "experimentalDecorators": true,
-        "baseUrl": ".",
-        "stripInternal": true,
         "sourceMap": true,
-        "inlineSources": true,
-        "skipLibCheck": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": false,
+        "noImplicitAny": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noEmitOnError": true,
+        "lib": ["es2015", "dom"],
         "paths": {
             "ng2-dropdown-treeview": ["index"]
         },
         "typeRoots": [
+            "typings",
             "node_modules/@types"
         ],
         "types": [
@@ -24,12 +26,10 @@
             "node"
         ]
     },
-    "files": [
-        "index.ts"
-    ],
     "exclude": [
         "demo",
-        "node_modules"
+        "node_modules",
+        "**/*.spec.ts"
     ],
     "angularCompilerOptions": {
         "strictMetadataEmit": true,
