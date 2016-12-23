@@ -8,9 +8,9 @@ Thumbs.db
 .DS_Store
 
 # Ignored files
+bundles
 demo/dist
 *.css
-*.js
 *.map
 *.d.ts
 *.metadata.json

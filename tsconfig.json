@@ -15,7 +15,7 @@
         "noEmitOnError": true,
         "lib": ["es2015", "dom"],
         "paths": {
-            "ng2-dropdown-treeview": ["index"]
+            "ng2-dropdown-treeview": ["src/index"]
         },
         "typeRoots": [
             "typings",
@@ -27,6 +27,9 @@
             "node"
         ]
     },
+    "include": [
+        "src/**/*"
+    ],
     "exclude": [
         "demo",
         "node_modules",

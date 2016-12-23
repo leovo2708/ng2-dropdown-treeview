@@ -20,7 +20,7 @@
             "node"
         ],
         "paths": {
-            "ng2-dropdown-treeview": ["../index"]
+            "ng2-dropdown-treeview": ["../src/index"]
         }
     }
 }

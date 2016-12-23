@@ -4,7 +4,7 @@ import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import * as _ from 'lodash';
-import { DropdownTreeviewModule, DropdownTreeviewComponent, DropdownTreeviewConfig, TreeItem } from '../index';
+import { DropdownTreeviewModule, DropdownTreeviewComponent, DropdownTreeviewConfig, TreeItem } from './index';
 
 @Component({
     selector: 'leo-test',
@@ -268,7 +268,7 @@ describe('DropdownTreeviewComponent', () => {
                 eventHelper.raiseInputEvent(filterInput.nativeElement, 'ad').then(() => {
                     const allCheckbox = debugElement.query(By.css('.dropdown-item-all > input'));
                     eventHelper.raiseClickEvent(allCheckbox.nativeElement).then(() => {
-                        expect(dropdownButton.nativeElement).not.toHaveTextContent('All1');
+                        expect(dropdownButton.nativeElement).not.toHaveTextContent('All');
                     });
                 });
             });
