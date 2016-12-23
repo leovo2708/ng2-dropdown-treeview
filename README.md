@@ -1,4 +1,4 @@
-# ng2-dropdown-treeview
+# ng2-dropdown-treeview [![Build Status](https://travis-ci.org/leovo2708/ng2-dropdown-treeview.svg?branch=master)](https://travis-ci.org/leovo2708/ng2-dropdown-treeview) [![npm version](https://img.shields.io/npm/v/ng2-dropdown-treeview.svg)](https://www.npmjs.com/package/ng2-dropdown-treeview)
 
 An Angular 2 checkable dropdown treeview component with multiple selection.
 
