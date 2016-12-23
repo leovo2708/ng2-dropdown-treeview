@@ -11,6 +11,9 @@ Thumbs.db
 bundles
 demo/dist
 src/*.d.ts
+src/*.js
+index.d.ts
+index.js
 *.css
 *.map
 *.metadata.json

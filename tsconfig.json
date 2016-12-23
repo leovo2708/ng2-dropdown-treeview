@@ -9,13 +9,16 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "declaration": true,
-        "removeComments": false,
-        "noImplicitAny": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "noEmitOnError": true,
-        "lib": ["es2015", "dom"],
+        "removeComments": true,
+        "noUnusedLocals": true,
+        "lib": [
+            "es2015",
+            "dom"
+        ],
         "paths": {
-            "ng2-dropdown-treeview": ["src/index"]
+            "ng2-dropdown-treeview": [
+                "index"
+            ]
         },
         "typeRoots": [
             "typings",
@@ -27,8 +30,8 @@
             "node"
         ]
     },
-    "include": [
-        "src/**/*"
+    "files": [
+        "index.ts"
     ],
     "exclude": [
         "demo",
