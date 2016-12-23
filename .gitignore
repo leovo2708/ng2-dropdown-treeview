@@ -10,7 +10,7 @@ Thumbs.db
 # Ignored files
 bundles
 demo/dist
+src/*.d.ts
 *.css
 *.map
-*.d.ts
 *.metadata.json
