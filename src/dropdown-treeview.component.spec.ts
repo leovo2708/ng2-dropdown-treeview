@@ -268,7 +268,7 @@ describe('DropdownTreeviewComponent', () => {
                 eventHelper.raiseInputEvent(filterInput.nativeElement, 'ad').then(() => {
                     const allCheckbox = debugElement.query(By.css('.dropdown-item-all > input'));
                     eventHelper.raiseClickEvent(allCheckbox.nativeElement).then(() => {
-                        expect(dropdownButton.nativeElement).not.toHaveTextContent('All');
+                        expect(dropdownButton.nativeElement).not.toHaveTextContent('All1');
                     });
                 });
             });
