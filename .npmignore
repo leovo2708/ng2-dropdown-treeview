@@ -11,6 +11,9 @@ debug.log
 Thumbs.db
 .DS_Store
 
+# CI
+.travis.yml
+
 # Ignored files
 demo
 config
