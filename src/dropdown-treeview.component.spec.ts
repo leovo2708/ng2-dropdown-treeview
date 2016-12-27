@@ -4,7 +4,7 @@ import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { BrowserModule, By } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import * as _ from 'lodash';
-import { DropdownTreeviewModule, DropdownTreeviewComponent, DropdownTreeviewConfig, TreeItem } from './index';
+import { DropdownTreeviewModule, DropdownTreeviewConfig, TreeItem } from '../index';
 
 @Component({
     selector: 'leo-test',
@@ -246,7 +246,6 @@ describe('DropdownTreeviewComponent', () => {
             fixture.whenStable().then(() => {
                 const filterInput = debugElement.query(By.css('input[type="text"]'));
                 eventHelper.raiseInputEvent(filterInput.nativeElement, 'us').then(() => {
-                    const allCheckbox = debugElement.query(By.css('.dropdown-item-all > input'));
                     let itemCheckBoxes = debugElement.queryAll(By.css('.treeview-container input'));
                     const usaCheckBox = itemCheckBoxes[itemCheckBoxes.length - 1];
                     eventHelper.raiseClickEvent(usaCheckBox.nativeElement).then(() => {
