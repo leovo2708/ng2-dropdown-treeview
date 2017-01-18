@@ -15,7 +15,7 @@ module.exports = webpackMerge(commonConfig, {
     },
 
     plugins: [
-        new webpack.NoErrorsPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
         new ExtractTextPlugin('[name].css'),
         new HtmlWebpackPlugin({
             template: './demo/src/index.ejs',

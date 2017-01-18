@@ -18,7 +18,7 @@ module.exports = webpackMerge(commonConfig, {
     },
 
     plugins: [
-        new webpack.NoErrorsPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
         new webpack.optimize.UglifyJsPlugin({
             compress: { warnings: false },
             output: { comments: false },
