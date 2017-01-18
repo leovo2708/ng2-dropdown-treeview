@@ -16,6 +16,7 @@ import { TreeviewPipe } from './treeview.pipe';
         TreeviewPipe
     ], exports: [
         DropdownTreeviewComponent,
+        TreeviewComponent,
         TreeviewPipe
     ]
 })
