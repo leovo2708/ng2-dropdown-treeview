@@ -1,6 +1,6 @@
 ﻿import { TreeviewPipe } from './treeview.pipe';
 
-describe('DropdownTreeviewPipe', () => {
+describe('TreeviewPipe', () => {
     let pipe = new TreeviewPipe();
 
     it('transforms null or undefined to undefined', () => {

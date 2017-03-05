@@ -1,13 +1,9 @@
-import { Component, NgModule } from '@angular/core';
+import { Component, Injectable, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import * as _ from 'lodash';
-import { DropdownTreeviewModule, DropdownTreeviewConfig, TreeItem } from 'ng2-dropdown-treeview';
-
-interface City {
-    id: number;
-    name: string;
-    postCode: number;
-}
+import { TreeviewConfig, TreeviewItem, TreeviewI18n } from 'ng2-dropdown-treeview';
+import { I18n } from './i18n';
+import { DefaultTreeviewI18n } from './default-treeview-i18n';
 
 @Component({
     selector: 'leo-app',
@@ -16,181 +12,166 @@ interface City {
 	<h2>Angular 2 dropdown-treeview component demo</h2>
 	<hr />
 	<br />
-	<h5>Example 1: Primary features</h5>
+    <div class="row">
+        <label for="item-category" class="col-3 col-form-label">Language</label>
+        <div class="col-9">
+            <select class="form-control" [(ngModel)]="language">
+                <option value="en">
+                    English
+                </option>
+                <option value="vi">
+                    Tiếng Việt
+                </option>
+            </select>
+        </div>
+    </div>
+    <hr>
+    <h4>Example 1: Primary features</h4>
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-12">
 			<div class="alert alert-success" role="alert">
 		        Selected books: {{bookValue}}
 		    </div>
 		</div>
-		<div class="col-sm-12">
+		<div class="col-12">
 			<div class="form-group row">
-				<label for="book-category" class="col-sm-3 col-form-label">Book category</label>
-				<div class="col-sm-9">
-					<leo-dropdown-treeview id="book-category" [config]="bookConfig" [items]="bookItems" (selectedChange)="bookValue = $event"></leo-dropdown-treeview>
+				<label for="book-category" class="col-3 col-form-label">Book category</label>
+				<div class="col-9">
+					<leo-dropdown-treeview [config]="bookConfig" [items]="bookItems"
+                        (selectedChange)="bookValue = $event">
+                    </leo-dropdown-treeview>
 				</div>
 			</div>
 		</div>
 	</div>
 	<br />
-	<h5>Example 2: Using pipe</h5>
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="alert alert-success" role="alert">
-		        Selected cities: {{cityValue | json}}
-		    </div>
-		</div>
-		<div class="col-sm-12">
-			<div class="form-group row">
-				<label for="city-category" class="col-sm-3 col-form-label">City category</label>
-				<div class="col-sm-9">
-					<leo-dropdown-treeview id="city-category" [items]="cities | leoTreeview:'name'" (selectedChange)="cityValue = $event"></leo-dropdown-treeview>
-				</div>
-			</div>
-		</div>
-	</div>
+	<h4>Example 2: Using pipe & i18n</h4>
+    <leo-city></leo-city>
 	<br />
-	<h5>Example 3: Customize text & 1000 items</h5>
+	<h4>Example 3: 1000 items</h4>
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-12">
 			<div class="alert alert-success" role="alert">
 		        Selected items: {{itemValue}}
 		    </div>
 		</div>
-		<div class="col-sm-12">
+		<div class="col-12">
 			<div class="form-group row">
-				<label for="item-category" class="col-sm-3 col-form-label">Item category</label>
-				<div class="col-sm-9">
-					<leo-dropdown-treeview id="item-category" [config]="itemConfig" [items]="items" (selectedChange)="itemValue = $event"></leo-dropdown-treeview>
+				<label for="item-category" class="col-3 col-form-label">Item category</label>
+				<div class="col-9">
+					<leo-dropdown-treeview [config]="itemConfig" [items]="items" (selectedChange)="itemValue = $event">
+                    </leo-dropdown-treeview>
 				</div>
 			</div>
 		</div>
 	</div>
 	<br />
-	<h5>Example 4: Tree-view without drop-down</h5>
+	<h4>Example 4: Tree-view without drop-down</h4>
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-12">
 			<div class="alert alert-success" role="alert">
 		        Selected items: {{bookValue2}}
 		    </div>
 		</div>
-		<div class="col-sm-12">
+		<div class="col-12">
 			<div class="form-group">
-                <div class="treeview-container">
-                    <div *ngFor="let item of bookItems2">
-                        <leo-treeview [item]="item" (checkedChange)="onItemCheckedChange()"></leo-treeview>
-                    </div>
+                <div class="d-inline-block">
+                    <leo-treeview [items]="bookItems2" [config]="bookConfig2" (selectedChange)="bookValue2 = $event"></leo-treeview>
                 </div>
             </div>
 		</div>
 	</div>
 </div>
   `,
+    providers: [
+        { provide: TreeviewI18n, useClass: DefaultTreeviewI18n }
+    ]
 })
 export class AppComponent {
-    bookItems: TreeItem[];
+    // example 1
+    bookItems = this.createBooks();
     bookValue: number[];
-    bookConfig: DropdownTreeviewConfig = {
-        isShowFilter: true,
-        isShowCollapseExpand: true,
-        noSelectText: 'Select categories',
-        moreSelectText: 'categories selected'
-    };
-
-    cities: City[];
-    cityValue: City[];
-
-    items: TreeItem[];
-    itemValue: any[];
-    itemConfig: DropdownTreeviewConfig = {
-        isShowFilter: true,
+    bookConfig: TreeviewConfig = {
         isShowAllCheckBox: true,
-        noSelectText: 'Select items',
-        moreSelectText: 'items selected',
-        allText: 'All selected',
-        headerText: 'All items',
+        isShowFilter: true,
+        isShowCollapseExpand: true
     };
 
-    bookItems2: TreeItem[];
+    // example 2
+
+    // example 3
+    items = this.createItems();
+    itemValue: any[];
+    itemConfig: TreeviewConfig = {
+        isShowAllCheckBox: true,
+        isShowFilter: true,
+        isShowCollapseExpand: false
+    };
+
+    // example 4
+    bookItems2 = this.createBooks();
     bookValue2: number[];
+    bookConfig2: TreeviewConfig = {
+        isShowAllCheckBox: true,
+        isShowFilter: true,
+        isShowCollapseExpand: true
+    };
 
-    ngOnInit() {
-        this.initBooks();
-        this.initCities();
-        this.initItems();
-        this.initBooks2();
+    constructor(
+        private i18n: I18n
+    ) { }
+
+    set language(language: string) {
+        this.i18n.language = language;
     }
 
-    onItemCheckedChange() {
-        this.buildBookValue2();
+    get language() {
+        return this.i18n.language;
     }
 
-    private initBooks() {
-        let childrenCategory = new TreeItem('Children', 1);
-        childrenCategory.children = [
-            new TreeItem('Baby 3-5', 11),
-            new TreeItem('Baby 6-8', 12),
-            new TreeItem('Baby 9-12', 13)
-        ];
-        let teenCategory = new TreeItem('Teen', 2);
-        let cultureCategory = new TreeItem('Culture', 22);
-        teenCategory.children = [
-            new TreeItem('Adventure', 21),
-            cultureCategory,
-            new TreeItem('Science', 23)
-        ];
-        cultureCategory.children = [
-            new TreeItem('Vietnam', 221),
-            new TreeItem('USA', 222),
-        ];
-        let magazineCategory = new TreeItem('Magazine', 3);
-        magazineCategory.disabled = true;
-        let otherCategory = new TreeItem('Others', 9);
-        otherCategory.children = [
-            new TreeItem('ABC', 91),
-            new TreeItem('XYZ', 92),
-        ];
-        otherCategory.disabled = true;
-        this.bookItems = [childrenCategory, teenCategory, magazineCategory, otherCategory];
+    private createBooks(): TreeviewItem[] {
+        const childrenCategory = new TreeviewItem({
+            text: 'Children', value: 1, children: [
+                { text: 'Baby 3-5', value: 11 },
+                { text: 'Baby 6-8', value: 12 },
+                { text: 'Baby 9-12', value: 13 }
+            ]
+        });
+        const itCategory = new TreeviewItem({
+            text: 'IT', value: 9, children: [
+                {
+                    text: 'Programming', value: 91, children: [
+                        { text: 'Angular 1', value: 911 },
+                        { text: 'Angular 2', value: 912 }
+                    ]
+                },
+                {
+                    text: 'Networking', value: 92, children: [
+                        { text: 'Internet', value: 921 },
+                        { text: 'Security', value: 922 }
+                    ]
+                }
+            ]
+        });
+        const teenCategory = new TreeviewItem({
+            text: 'Teen', value: 2, disabled: true, children: [
+                { text: 'Adventure', value: 21 },
+                { text: 'Science', value: 22 }
+            ]
+        });
+        const othersCategory = new TreeviewItem({ text: 'Others', value: 3, disabled: true });
+        return [childrenCategory, itCategory, teenCategory, othersCategory];
     }
 
-    private initCities() {
-        this.cities = [
-            {
-                id: 1,
-                name: 'Ho Chi Minh',
-                postCode: 700000
-            },
-            {
-                id: 2,
-                name: 'Ha Noi',
-                postCode: 100000
-            }
-        ];
-    }
-
-    private initItems() {
-        let items: TreeItem[] = [];
+    private createItems(): TreeviewItem[] {
+        const items: TreeviewItem[] = [];
         for (let i = 0; i < 1000; i++) {
-            let value: any = i === 0 ? { name: `${i}` } : i;
-            let checked = i % 100 == 0;
-            let treeItem = new TreeItem(`Item ${i}`, value);
-            treeItem.checked = checked;
-            items.push(treeItem);
+            const value: any = i === 0 ? { name: `${i}` } : i;
+            const checked = i % 100 === 0;
+            const item = new TreeviewItem({ text: `Item ${i}`, value: value });
+            item.checked = checked;
+            items.push(item);
         };
-        this.items = items;
-    }
-
-    private initBooks2() {
-        this.bookItems2 = _.cloneDeep(this.bookItems);
-        this.buildBookValue2();
-    }
-
-    private buildBookValue2() {
-        let checkedItems: TreeItem[] = [];
-        for (let i = 0; i < this.bookItems2.length; i++) {
-            checkedItems = _.concat(checkedItems, this.bookItems2[i].getCheckedItems());
-        }
-        this.bookValue2 = checkedItems.map(item => item.value);
+        return items;
     }
 }

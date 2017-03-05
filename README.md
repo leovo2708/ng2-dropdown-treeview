@@ -6,7 +6,7 @@ An Angular 2 checkable dropdown treeview component with multiple selection.
 
 * [Angular 2](https://angular.io)
 * [Lodash](https://lodash.com)
-* [Bootstrap 4](https://v4-alpha.getbootstrap.com)
+* [Bootstrap 4 alpha 6](https://v4-alpha.getbootstrap.com)
 * [Font Awesome 4](http://fontawesome.io)
 
 You can customize CSS yourself to break down dependencies to Bootstrap & Font Awesome.
@@ -14,10 +14,10 @@ You can customize CSS yourself to break down dependencies to Bootstrap & Font Aw
 ## Features
 
 * Unlimited tree levels
-* Item can be checked / disabled by checkbox.
+* Item state: checked, disabled
 * Collapse / Expand
 * Text filtering
-* Customizable texts
+* i18n support
 
 ## Demo
 
@@ -58,11 +58,7 @@ Here is the example template:
  {
     isShowAllCheckBox: true,
     isShowFilter: false,
-    isShowCollapseExpand: false,
-    headerText: 'All',
-    allText: 'All',
-    noSelectText: 'Select options',
-    moreSelectText: ' selected'
+    isShowCollapseExpand: false
 }
 ```
 
@@ -75,7 +71,7 @@ I also support a pipe `leoTreeview` to map your JSON objects to TreeItem objects
 </leo-dropdown-treeview>
 ```
 
-Please checkout my demo examples.
+Please checkout my demo for all of funtionality.
 
 ## Contributing
 

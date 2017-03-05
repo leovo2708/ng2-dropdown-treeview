@@ -1,16 +1,16 @@
 ﻿import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
-import { TreeItem } from './treeview.component';
+import { TreeviewItem } from './treeview-item';
 
 @Pipe({
     name: 'leoTreeview'
 })
 export class TreeviewPipe implements PipeTransform {
-    transform(objects: any[], textField: string): TreeItem[] {
+    transform(objects: any[], textField: string): TreeviewItem[] {
         if (_.isNil(objects)) {
             return undefined;
         }
 
-        return objects.map(object => new TreeItem(object[textField], object));
+        return objects.map(object => new TreeviewItem({ text: object[textField], value: object }));
     }
 }

@@ -1,145 +1,264 @@
-﻿import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import * as _ from 'lodash';
+import { TreeviewI18n } from './treeview-i18n';
+import { TreeviewItem } from './treeview-item';
+import { TreeviewConfig } from './treeview-config';
+import { TreeviewEventParser } from './treeview-event-parser';
 
-export class TreeItem {
-    private internalDisabled = false;
-    private internalChecked = true;
-    text: string;
-    value: any;
-    collapsed = false;
-    children?: TreeItem[];
-
-    constructor(text: string, value: any = undefined) {
-        this.text = text;
-        this.value = value;
+class FilterTreeviewItem extends TreeviewItem {
+    private readonly refItem: TreeviewItem;
+    constructor(item: TreeviewItem) {
+        super({
+            text: item.text,
+            value: item.value,
+            disabled: item.disabled,
+            checked: item.checked,
+            collapsed: item.collapsed,
+            children: item.children
+        });
+        this.refItem = item;
     }
 
-    get checked(): boolean {
-        return this.internalChecked;
-    }
-
-    set checked(checked: boolean) {
-        if (!this.disabled) {
-            this.internalChecked = checked;
-        }
-    }
-
-    get disabled(): boolean {
-        return this.internalDisabled;
-    }
-
-    set disabled(disabled: boolean) {
-        this.internalDisabled = disabled;
-        if (!_.isNil(this.children)) {
-            this.children.forEach(child => child.disabled = disabled);
-        }
-    }
-
-    updateCollapsedRecursive(collapsed: boolean) {
-        this.collapsed = collapsed;
+    updateRefChecked() {
         if (!_.isNil(this.children)) {
             this.children.forEach(child => {
-                child.updateCollapsedRecursive(collapsed);
+                if (child instanceof FilterTreeviewItem) {
+                    child.updateRefChecked();
+                }
             });
         }
-    }
 
-    updateCheckedRecursive(checked: boolean) {
-        if (this.disabled) {
-            return;
-        }
-
-        this.checked = checked;
-        if (!_.isNil(this.children)) {
-            this.children.forEach(child => {
-                child.updateCheckedRecursive(checked);
-            });
-        }
-    }
-
-    getCheckedItems(): TreeItem[] {
-        let checkedItems: TreeItem[] = [];
-        if (_.isNil(this.children)) {
-            if (this.checked) {
-                checkedItems.push(this);
-            }
-        } else {
-            for (let i = 0; i < this.children.length; i++) {
-                checkedItems = _.concat(checkedItems, this.children[i].getCheckedItems());
+        let refChecked = this.checked;
+        if (!_.isNil(this.refItem.children)) {
+            for (let i = 0; i < this.refItem.children.length; i++) {
+                let refChild = this.refItem.children[i];
+                if (refChild instanceof FilterTreeviewItem) {
+                    refChild.updateRefChecked();
+                }
+                if (!refChild.checked) {
+                    refChecked = false;
+                    break;
+                }
             }
         }
-
-        return checkedItems;
+        this.refItem.checked = refChecked;
     }
 }
 
 @Component({
     selector: 'leo-treeview',
     template: `
-<div class="treeview-item" [class.treeview-parent]="item.children">
-    <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
-    class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
-    <label class="form-check-label">
-        <input type="checkbox" class="form-check-input"
-        [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange($event)" [disabled]="item.disabled" />
-        {{item.text}}
-    </label>
-    <div [hidden]="item.collapsed" *ngFor="let child of item.children">
-        <leo-treeview [item]="child" (checkedChange)="onChildCheckedChange($event)"></leo-treeview>
+<div class="treeview-header">
+    <div *ngIf="config.isShowFilter" class="row">
+        <div class="col-12">
+            <input class="form-control" type="text" [placeholder]="i18n.filterPlaceholder()"
+                [(ngModel)]="filterText" (ngModelChange)="onFilterTextChange()" />
+        </div>
+    </div>
+    <div *ngIf="hasFilterItems">
+        <div *ngIf="config.isShowAllCheckBox || config.isShowCollapseExpand" class="row">
+            <div class="col-12" [class.row-margin]="config.isShowFilter && (config.isShowAllCheckBox || config.isShowCollapseExpand)">
+                <label *ngIf="config.isShowAllCheckBox" class="form-check-label label-item-all">
+                    <input type="checkbox" class="form-check-input"
+                        [(ngModel)]="allItem.checked" (ngModelChange)="onAllCheckedChange($event)" />
+                        {{i18n.allCheckboxText()}}
+                </label>
+                <label *ngIf="config.isShowCollapseExpand" class="pull-right label-collapse-expand">
+                    <i (click)="toggleCollapseExpand()" [title]="i18n.tooltipCollapseExpand(allItem.collapsed)" aria-hidden="true"
+                        class="fa" [class.fa-expand]="allItem.collapsed" [class.fa-compress]="!allItem.collapsed"></i>
+                </label>
+            </div>
+        </div>
+        <div *ngIf="config.isShowFilter || config.isShowAllCheckBox || config.isShowCollapseExpand" class="divider"></div>
     </div>
 </div>
-    `,
+<div class="treeview-container">
+    <div *ngFor="let item of filterItems">
+        <leo-treeview-item [item]="item" (checkedChange)="onItemCheckedChange(item, $event)"></leo-treeview-item>
+    </div>
+</div>
+<div *ngIf="!hasFilterItems" class="treeview-text">
+    {{i18n.filterNoItemsFoundText()}}
+</div>`,
     styles: [`
-.treeview-item {
-    padding-left: 20px;
-    white-space: nowrap;
+.row-margin {
+    margin-top: .3rem;
 }
-
-.treeview-item .form-check-label {
-    padding-top: 2px;
-    padding-bottom: 2px;
+.label-item-all {
 }
-
-.treeview-item .fa {
-    margin-left: -1.0rem;
-    width: 10px;
+.label-collapse-expand {
+    margin: 0;
+    padding: 0 .3rem;
     cursor: pointer;
 }
-    `]
+.divider {
+    height: 1px;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    background: #000;
+}
+.treeview-text {
+    padding: 3px 0;
+    white-space: nowrap;
+}
+`]
 })
-export class TreeviewComponent {
-    @Input() item: TreeItem;
-    @Output() checkedChange = new EventEmitter<boolean>();
+export class TreeviewComponent implements OnChanges {
+    @Input() items: TreeviewItem[];
+    @Input() config: TreeviewConfig;
+    @Output() selectedChange = new EventEmitter<any[]>();
+    allItem: TreeviewItem;
+    filterText: string;
+    filterItems: TreeviewItem[];
+    checkedItems: TreeviewItem[];
+
+    constructor(
+        public i18n: TreeviewI18n,
+        private defaultConfig: TreeviewConfig,
+        private eventParser: TreeviewEventParser
+    ) {
+        this.config = this.defaultConfig;
+        this.allItem = new TreeviewItem({ text: 'All', value: undefined });
+    }
+
+    get hasItems(): boolean {
+        return !_.isNil(this.items) && this.items.length > 0;
+    }
+
+    get hasFilterItems(): boolean {
+        return !_.isNil(this.filterItems) && this.filterItems.length > 0;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        const itemsSimpleChange = changes['items'];
+        if (!_.isNil(itemsSimpleChange)) {
+            this.updateFilterItems();
+            this.onAfterSelectedChange();
+        }
+    }
 
     toggleCollapseExpand() {
-        this.item.collapsed = !this.item.collapsed;
-    }
-
-    onCheckedChange(checked: boolean) {
-        if (!_.isNil(this.item.children)) {
-            this.item.children.forEach(child => {
-                child.updateCheckedRecursive(checked);
-            });
+        this.allItem.collapsed = !this.allItem.collapsed;
+        if (!_.isNil(this.filterItems)) {
+            this.filterItems.forEach(item => item.setCollapsedRecursive(this.allItem.collapsed));
         }
-
-        this.checkedChange.emit(checked);
     }
 
-    onChildCheckedChange(checked: boolean) {
-        if (this.item.checked !== checked) {
-            let tempChecked = true;
-            for (let i = 0; i < this.item.children.length; i++) {
-                if (!this.item.children[i].checked) {
-                    tempChecked = false;
+    onFilterTextChange() {
+        this.updateFilterItems();
+    }
+
+    onAllCheckedChange(checked: boolean) {
+        this.filterItems.forEach(item => {
+            item.setCheckedRecursive(checked);
+            if (item instanceof FilterTreeviewItem) {
+                item.updateRefChecked();
+            }
+        });
+
+        this.onAfterSelectedChange();
+    }
+
+    onItemCheckedChange(item: TreeviewItem, checked: boolean) {
+        if (this.allItem.checked !== checked) {
+            let allItemChecked = true;
+            for (let i = 0; i < this.filterItems.length; i++) {
+                if (!this.filterItems[i].checked) {
+                    allItemChecked = false;
                     break;
                 }
             }
 
-            if (this.item.checked !== tempChecked) {
-                this.item.checked = tempChecked;
+            if (this.allItem.checked !== allItemChecked) {
+                this.allItem.checked = allItemChecked;
             }
         }
 
-        this.checkedChange.emit(checked);
+        if (item instanceof FilterTreeviewItem) {
+            item.updateRefChecked();
+        }
+
+        this.onAfterSelectedChange();
+    }
+
+    private getCheckedItems(): TreeviewItem[] {
+        let checkedItems: TreeviewItem[] = [];
+        if (!_.isNil(this.items)) {
+            for (let i = 0; i < this.items.length; i++) {
+                checkedItems = _.concat(checkedItems, this.items[i].getCheckedItems());
+            }
+        }
+
+        return checkedItems;
+    }
+
+    private onAfterSelectedChange() {
+        this.checkedItems = this.getCheckedItems();
+        const values = this.eventParser.getSelectedChange(this);
+        this.selectedChange.emit(values);
+    }
+
+    private updateFilterItems() {
+        if (!_.isNil(this.items) && _.isString(this.filterText) && this.filterText !== '') {
+            const filterItems: TreeviewItem[] = [];
+            const filterText = this.filterText.toLowerCase();
+            this.items.forEach(item => {
+                const newItem = this.filterItem(item, filterText);
+                if (!_.isNil(newItem)) {
+                    filterItems.push(newItem);
+                }
+            });
+            this.filterItems = filterItems;
+        } else {
+            this.filterItems = this.items;
+        }
+
+        this.updateCheckedAll();
+    }
+
+    private filterItem(item: TreeviewItem, filterText: string): TreeviewItem {
+        let isMatch = _.includes(item.text.toLowerCase(), filterText);
+        if (isMatch) {
+            return item;
+        } else {
+            if (!_.isNil(item.children)) {
+                const children: TreeviewItem[] = [];
+                let checkedCount = 0;
+                if (!_.isNil(item.children)) {
+                    item.children.forEach(child => {
+                        const newChild = this.filterItem(child, filterText);
+                        if (!_.isNil(newChild)) {
+                            children.push(newChild);
+                            if (newChild.checked) {
+                                checkedCount++;
+                            }
+                        }
+                    });
+                    if (children.length > 0) {
+                        const newItem = new FilterTreeviewItem(item);
+                        newItem.children = children;
+                        return newItem;
+                    }
+                }
+            }
+        }
+
+        return undefined;
+    }
+
+    private updateCheckedAll() {
+        if (!_.isNil(this.filterItems)) {
+            let hasItemUnchecked = false;
+            for (let i = 0; i < this.filterItems.length; i++) {
+                if (!this.filterItems[i].checked) {
+                    hasItemUnchecked = true;
+                    break;
+                }
+            }
+
+            if (this.allItem.checked === hasItemUnchecked) {
+                this.allItem.checked = !hasItemUnchecked;
+            }
+        }
     }
 }
