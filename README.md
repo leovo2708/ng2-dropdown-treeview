@@ -1,6 +1,6 @@
 # ng2-dropdown-treeview [![Build Status](https://travis-ci.org/leovo2708/ng2-dropdown-treeview.svg?branch=master)](https://travis-ci.org/leovo2708/ng2-dropdown-treeview) [![npm version](https://img.shields.io/npm/v/ng2-dropdown-treeview.svg)](https://www.npmjs.com/package/ng2-dropdown-treeview)
 
-An Angular 2 checkable dropdown treeview component with multiple selection.
+An Angular 2 tree component with checkbox and multiple level.
 
 ## Dependencies
 
@@ -17,7 +17,7 @@ You can customize CSS yourself to break down dependencies to Bootstrap & Font Aw
 * Item state: checked, disabled
 * Collapse / Expand
 * Text filtering
-* i18n support
+* Internationalization (i18n) support
 
 ## Demo
 

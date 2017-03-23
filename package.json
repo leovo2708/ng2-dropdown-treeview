@@ -1,7 +1,7 @@
 {
   "name": "ng2-dropdown-treeview",
-  "version": "1.0.4",
-  "description": "An Angular 2 checkable dropdown treeview component with multiple selection",
+  "version": "1.0.5",
+  "description": "An Angular 2 tree component with checkbox and multiple level",
   "scripts": {
     "sass": "node-sass src -o src --output-style=expanded --indent-width=4",
     "prepublish": "npm run ngc && npm run build",
@@ -14,14 +14,18 @@
     "demo:prod": "webpack --config demo/config/webpack.prod.js --progress --profile --bail"
   },
   "keywords": [
-    "ng2",
-    "dropdown",
-    "treeview",
+    "ng",
     "angular",
+    "ng2",
     "angular2",
+    "ng2-dropdown-treeview",
     "tree",
-    "multiselect",
-    "multiple selection"
+    "treeview",
+    "tree-view",
+    "checkbox",
+    "dropdown",
+    "recursive",
+    "angular tree component"
   ],
   "repository": {
     "type": "git",
