@@ -100,6 +100,7 @@ class FilterTreeviewItem extends TreeviewItem {
 .treeview-container {
     overflow-x: hidden;
     overflow-y: auto;
+    padding-right: 13px;
 }
 .treeview-text {
     padding: 3px 0;
