@@ -134,7 +134,7 @@ export class AppComponent {
 
     private createBooks(): TreeviewItem[] {
         const childrenCategory = new TreeviewItem({
-            text: 'Children', value: 1, children: [
+            text: 'Children', value: 1, collapsed: true, children: [
                 { text: 'Baby 3-5', value: 11 },
                 { text: 'Baby 6-8', value: 12 },
                 { text: 'Baby 9-12', value: 13 }
@@ -145,7 +145,8 @@ export class AppComponent {
                 {
                     text: 'Programming', value: 91, children: [
                         { text: 'Angular 1', value: 911 },
-                        { text: 'Angular 2', value: 912 }
+                        { text: 'Angular 2', value: 912 },
+                        { text: 'ReactJS', value: 913 }
                     ]
                 },
                 {
@@ -157,12 +158,12 @@ export class AppComponent {
             ]
         });
         const teenCategory = new TreeviewItem({
-            text: 'Teen', value: 2, disabled: true, children: [
+            text: 'Teen', value: 2, collapsed: true, disabled: true, children: [
                 { text: 'Adventure', value: 21 },
                 { text: 'Science', value: 22 }
             ]
         });
-        const othersCategory = new TreeviewItem({ text: 'Others', value: 3, disabled: true });
+        const othersCategory = new TreeviewItem({ text: 'Others', value: 3, collapsed: true, disabled: true });
         return [childrenCategory, itCategory, teenCategory, othersCategory];
     }
 

@@ -44,7 +44,7 @@ export class AppModule {
 
 ## Usage
 
-Here is the example template:
+Treeview dropdown:
 ```html
 <leo-dropdown-treeview
     [config]="config"
@@ -53,14 +53,25 @@ Here is the example template:
 </leo-dropdown-treeview>
 ```
 
+Treeview without dropdown:
+```html
+<leo-treeview
+    [config]="config"
+    [items]="items"
+    (selectedChange)="onSelectedChange($event)">
+</leo-treeview>
+```
+
  `config` is optional. This is the default configuration:
  ```js
  {
     isShowAllCheckBox: true,
     isShowFilter: false,
-    isShowCollapseExpand: false
+    isShowCollapseExpand: false,
+    maxHeight: 500
 }
 ```
+You can change default configuration easily because TreeviewConfig is injectable.
 
 I also support a pipe `leoTreeview` to map your JSON objects to TreeItem objects.
 ```html

@@ -1,13 +1,13 @@
 import { TreeviewItem, TreeviewConfig } from '../../index';
 
-let childrenCategory = new TreeviewItem({
+const childrenCategory = new TreeviewItem({
     text: 'Children', value: 1, children: [
         { text: 'Baby 3-5', value: 11 },
         { text: 'Baby 6-8', value: 12 },
         { text: 'Baby 9-12', value: 13 }
     ]
 });
-let itCategory = new TreeviewItem({
+const itCategory = new TreeviewItem({
     text: 'IT', value: 9, children: [
         {
             text: 'Programming', value: 91, children: [
@@ -23,17 +23,18 @@ let itCategory = new TreeviewItem({
         }
     ]
 });
-let teenCategory = new TreeviewItem({
+const teenCategory = new TreeviewItem({
     text: 'Teen', value: 2, disabled: true, children: [
         { text: 'Adventure', value: 21 },
         { text: 'Science', value: 22 }
     ]
 });
-let othersCategory = new TreeviewItem({ text: 'Others', value: 3, disabled: true });
+const othersCategory = new TreeviewItem({ text: 'Others', value: 3, disabled: true });
 let config: TreeviewConfig = {
     isShowAllCheckBox: true,
     isShowCollapseExpand: true,
-    isShowFilter: true
+    isShowFilter: true,
+    maxHeight: 500
 };
 
 export let model = {

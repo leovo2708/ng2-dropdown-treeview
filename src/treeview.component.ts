@@ -63,8 +63,8 @@ class FilterTreeviewItem extends TreeviewItem {
                         [(ngModel)]="allItem.checked" (ngModelChange)="onAllCheckedChange($event)" />
                         {{i18n.allCheckboxText()}}
                 </label>
-                <label *ngIf="config.isShowCollapseExpand" class="pull-right label-collapse-expand">
-                    <i (click)="toggleCollapseExpand()" [title]="i18n.tooltipCollapseExpand(allItem.collapsed)" aria-hidden="true"
+                <label *ngIf="config.isShowCollapseExpand" class="pull-right label-collapse-expand" (click)="toggleCollapseExpand()">
+                    <i [title]="i18n.tooltipCollapseExpand(allItem.collapsed)" aria-hidden="true"
                         class="fa" [class.fa-expand]="allItem.collapsed" [class.fa-compress]="!allItem.collapsed"></i>
                 </label>
             </div>
@@ -142,6 +142,7 @@ export class TreeviewComponent implements OnChanges {
         const itemsSimpleChange = changes['items'];
         if (!_.isNil(itemsSimpleChange)) {
             this.updateFilterItems();
+            this.updateCollapsedAll();
             this.onAfterSelectedChange();
         }
     }
@@ -269,5 +270,18 @@ export class TreeviewComponent implements OnChanges {
                 this.allItem.checked = !hasItemUnchecked;
             }
         }
+    }
+
+    private updateCollapsedAll() {
+        let hasItemExpanded = false;
+        if (!_.isNil(this.filterItems)) {
+            for (let i = 0; i < this.filterItems.length; i++) {
+                if (!this.filterItems[i].collapsed) {
+                    hasItemExpanded = true;
+                    break;
+                }
+            }
+        }
+        this.allItem.collapsed = !hasItemExpanded;
     }
 }
