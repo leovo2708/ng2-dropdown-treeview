@@ -94,7 +94,8 @@ export class AppComponent {
     bookConfig: TreeviewConfig = {
         isShowAllCheckBox: true,
         isShowFilter: true,
-        isShowCollapseExpand: true
+        isShowCollapseExpand: true,
+        maxHeight: 500
     };
 
     // example 2
@@ -105,7 +106,8 @@ export class AppComponent {
     itemConfig: TreeviewConfig = {
         isShowAllCheckBox: true,
         isShowFilter: true,
-        isShowCollapseExpand: false
+        isShowCollapseExpand: false,
+        maxHeight: 500
     };
 
     // example 4
@@ -114,7 +116,8 @@ export class AppComponent {
     bookConfig2: TreeviewConfig = {
         isShowAllCheckBox: true,
         isShowFilter: true,
-        isShowCollapseExpand: true
+        isShowCollapseExpand: true,
+        maxHeight: 500
     };
 
     constructor(

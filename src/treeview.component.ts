@@ -72,7 +72,7 @@ class FilterTreeviewItem extends TreeviewItem {
         <div *ngIf="config.isShowFilter || config.isShowAllCheckBox || config.isShowCollapseExpand" class="divider"></div>
     </div>
 </div>
-<div class="treeview-container">
+<div class="treeview-container" [style.max-height.px]="maxHeight">
     <div *ngFor="let item of filterItems">
         <leo-treeview-item [item]="item" (checkedChange)="onItemCheckedChange(item, $event)"></leo-treeview-item>
     </div>
@@ -96,6 +96,10 @@ class FilterTreeviewItem extends TreeviewItem {
     margin: 0.5rem 0;
     overflow: hidden;
     background: #000;
+}
+.treeview-container {
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .treeview-text {
     padding: 3px 0;
@@ -127,6 +131,10 @@ export class TreeviewComponent implements OnChanges {
 
     get hasFilterItems(): boolean {
         return !_.isNil(this.filterItems) && this.filterItems.length > 0;
+    }
+
+    get maxHeight(): string {
+        return `${this.config.maxHeight}`;
     }
 
     ngOnChanges(changes: SimpleChanges) {

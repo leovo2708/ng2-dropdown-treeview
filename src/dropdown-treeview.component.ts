@@ -25,31 +25,23 @@ import { TreeviewComponent } from './treeview.component';
     width: 100%;
     display: inline-block;
 }
-
 .dropdown button {
     width: 100%;
     text-align: left;
 }
-
 .dropdown button::after {
     position: absolute;
     right: .6rem;
     margin-top: .6rem;
 }
-
 .dropdown .dropdown-menu .row {
     padding: 2px 10px;
 }
-
 .dropdown .dropdown-menu .dropdown-item-collapse-expand {
     padding: 0;
 }
-
 .dropdown .dropdown-menu .dropdown-container {
     padding: 0 .6rem;
-    max-height: 500px;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
     `]
 })

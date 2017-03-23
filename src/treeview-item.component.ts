@@ -61,10 +61,9 @@ export class TreeviewItemComponent {
                 }
             }
 
-            if (this.item.checked !== itemChecked) {
-                this.item.checked = itemChecked;
-                this.checkedChange.emit(checked);
-            }
+            this.item.checked = itemChecked;
         }
+
+        this.checkedChange.emit(checked);
     }
 }
