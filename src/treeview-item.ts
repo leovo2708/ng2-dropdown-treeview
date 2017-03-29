@@ -44,9 +44,6 @@ export class TreeviewItem {
                 if (this.disabled === true) {
                     child.disabled = true;
                 }
-                if (this.checked === true) {
-                    child.checked = true;
-                }
 
                 return new TreeviewItem(child);
             });
@@ -137,7 +134,8 @@ export class TreeviewItem {
                 checkedItems.push(this);
             }
         } else {
-            for (let i = 0; i < this.internalChildren.length; i++) {
+            const childCount = this.internalChildren.length;
+            for (let i = 0; i < childCount; i++) {
                 checkedItems = _.concat(checkedItems, this.internalChildren[i].getCheckedItems());
             }
         }
