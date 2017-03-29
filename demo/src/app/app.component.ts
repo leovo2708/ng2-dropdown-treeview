@@ -34,11 +34,17 @@ import { DefaultTreeviewI18n } from './default-treeview-i18n';
 		    </div>
 		</div>
 		<div class="col-12">
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="enableDropdownButton">
+                    Check/uncheck to enable/disable dropdown button
+                </label>
+            </div>
 			<div class="form-group row">
 				<label for="book-category" class="col-3 col-form-label">Book category</label>
 				<div class="col-9">
-					<leo-dropdown-treeview [config]="bookConfig" [items]="bookItems"
-                        (selectedChange)="bookValue = $event">
+					<leo-dropdown-treeview [config]="bookConfig" [items]="bookItems" (selectedChange)="bookValue = $event"
+                        [disabled]="!enableDropdownButton" [leoDisabledOnSelector]="'button.dropdown-toggle'">
                     </leo-dropdown-treeview>
 				</div>
 			</div>
@@ -88,6 +94,8 @@ import { DefaultTreeviewI18n } from './default-treeview-i18n';
     ]
 })
 export class AppComponent {
+    enableDropdownButton = true;
+
     // example 1
     bookItems = this.createBooks();
     bookValue: number[];

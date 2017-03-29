@@ -5,6 +5,7 @@ import { DropdownTreeviewModule } from 'ng2-dropdown-treeview';
 import { AppComponent } from './app.component';
 import { CityComponent } from './city.component';
 import { I18n } from './i18n';
+import { DisabledOnSelectorDirective } from './disabled-on-selector.directive';
 
 @NgModule({
     imports: [
@@ -14,7 +15,8 @@ import { I18n } from './i18n';
     ],
     declarations: [
         CityComponent,
-        AppComponent
+        AppComponent,
+        DisabledOnSelectorDirective
     ],
     providers: [
         I18n
