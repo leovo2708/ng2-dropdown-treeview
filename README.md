@@ -113,7 +113,12 @@ Create a TreeviewItem
 
 You can pass the second paramater 'autoCorrectChecked' with value=true (default is false) in constructor of TreeviewItem to correct checked value of it and all of its descendants. In some cases, you need to add or remove children flexibly, checked of parent may be not correct. Then you need to call function correctChecked() to help to correct from root to its descendants.
  ```js
- itCategory.correctChecked();
+const books = this.createBooks();
+const itBooks = books[1];
+const programmingBooks = itBooks.children[0];
+const frontendBooks = programmingBooks.children[0];
+frontendBooks.children.push(new TreeviewItem({ text: 'jQuery', value: 9114, checked: false }));
+itBooks.correctChecked(); // need this to make 'Frontend' node to change checked value from true to value
  ```
 
 Please checkout my demo for all of funtionality.

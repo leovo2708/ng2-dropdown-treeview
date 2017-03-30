@@ -119,7 +119,7 @@ export class AppComponent {
     };
 
     // example 4
-    bookItems2 = this.createBooks();
+    bookItems2 = this.createBooks2();
     bookValue2: number[];
     bookConfig2: TreeviewConfig = {
         isShowAllCheckBox: true,
@@ -192,5 +192,15 @@ export class AppComponent {
             items.push(item);
         };
         return items;
+    }
+
+    private createBooks2(): TreeviewItem[] {
+        const books = this.createBooks();
+        const itBooks = books[1];
+        const programmingBooks = itBooks.children[0];
+        const frontendBooks = programmingBooks.children[0];
+        frontendBooks.children.push(new TreeviewItem({ text: 'jQuery', value: 9114, checked: false }));
+        itBooks.correctChecked(); // need this to make 'Frontend' node to change checked value from true to false
+        return books;
     }
 }
