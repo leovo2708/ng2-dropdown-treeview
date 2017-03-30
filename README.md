@@ -82,6 +82,40 @@ I also support a pipe `leoTreeview` to map your JSON objects to TreeItem objects
 </leo-dropdown-treeview>
 ```
 
+Create a TreeviewItem
+ ```js
+ const itCategory = new TreeviewItem({
+    text: 'IT', value: 9, children: [
+        {
+            text: 'Programming', value: 91, children: [{
+                text: 'Frontend', value: 911, children: [
+                    { text: 'Angular 1', value: 9111 },
+                    { text: 'Angular 2', value: 9112 },
+                    { text: 'ReactJS', value: 9113 }
+                ]
+            }, {
+                text: 'Backend', value: 912, children: [
+                    { text: 'C#', value: 9121 },
+                    { text: 'Java', value: 9122 },
+                    { text: 'Python', value: 9123, checked: false }
+                ]
+            }]
+        },
+        {
+            text: 'Networking', value: 92, children: [
+                { text: 'Internet', value: 921 },
+                { text: 'Security', value: 922 }
+            ]
+        }
+    ]
+});
+```
+
+You can pass the second paramater 'autoCorrectChecked' with value=true (default is false) in constructor of TreeviewItem to correct checked value of it and all of its descendants. In some cases, you need to add or remove children flexibly, checked of parent may be not correct. Then you need to call function correctChecked() to help to correct from root to its descendants.
+ ```js
+ itCategory.correctChecked();
+ ```
+
 Please checkout my demo for all of funtionality.
 
 ## Contributing

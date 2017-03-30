@@ -17,7 +17,7 @@ export class TreeviewItem {
     text: string;
     value: any;
 
-    constructor(item: TreeItem) {
+    constructor(item: TreeItem, autoCorrectChecked = false) {
         if (_.isNil(item)) {
             throw new Error('Item must be defined');
         }
@@ -47,6 +47,10 @@ export class TreeviewItem {
 
                 return new TreeviewItem(child);
             });
+        }
+
+        if (autoCorrectChecked) {
+            this.correctChecked();
         }
     }
 
@@ -141,5 +145,27 @@ export class TreeviewItem {
         }
 
         return checkedItems;
+    }
+
+    correctChecked() {
+        this.internalChecked = this.getCorrectChecked();
+    }
+
+    private getCorrectChecked(): boolean {
+        let checked = this.checked;
+        if (!_.isNil(this.internalChildren)) {
+            checked = true;
+            const childCount = this.internalChildren.length;
+            for (let i = 0; i < childCount; i++) {
+                const child = this.internalChildren[i];
+                child.internalChecked = child.getCorrectChecked();
+                if (!child.internalChecked) {
+                    checked = false;
+                    break;
+                }
+            }
+        }
+
+        return checked;
     }
 }
