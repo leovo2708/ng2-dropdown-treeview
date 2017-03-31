@@ -44,7 +44,7 @@ export class AppModule {
 
 ## Usage
 
-Treeview dropdown:
+#### Treeview dropdown:
 ```html
 <leo-dropdown-treeview
     [config]="config"
@@ -53,7 +53,7 @@ Treeview dropdown:
 </leo-dropdown-treeview>
 ```
 
-Treeview without dropdown:
+#### Treeview without dropdown:
 ```html
 <leo-treeview
     [config]="config"
@@ -73,7 +73,8 @@ Treeview without dropdown:
 ```
 You can change default configuration easily because TreeviewConfig is injectable.
 
-I also support a pipe `leoTreeview` to map your JSON objects to TreeItem objects.
+#### Pipe `leoTreeview`:
+To map your JSON objects to TreeItem objects.
 ```html
 <leo-dropdown-treeview
     [config]="config"
@@ -82,7 +83,7 @@ I also support a pipe `leoTreeview` to map your JSON objects to TreeItem objects
 </leo-dropdown-treeview>
 ```
 
-Create a TreeviewItem
+#### Create a TreeviewItem:
  ```js
  const itCategory = new TreeviewItem({
     text: 'IT', value: 9, children: [
@@ -111,7 +112,7 @@ Create a TreeviewItem
 });
 ```
 
-You can pass the second paramater 'autoCorrectChecked' with value=true (default is false) in constructor of TreeviewItem to correct checked value of it and all of its descendants. In some cases, you need to add or remove children flexibly, checked of parent may be not correct. Then you need to call function correctChecked() to help to correct from root to its descendants.
+You can pass the second paramater 'autoCorrectChecked' with value=true (default is false) in constructor of TreeviewItem to correct checked value of it and all of its descendants. In some cases, you need to push or pop children flexibly, checked of parent may be not correct. Then you need to call function correctChecked() to help to correct from root to its descendants.
  ```js
 const vegetableCategory = new TreeviewItem({
     text: 'Vegetable', value: 2, children: [
@@ -123,7 +124,11 @@ vegetableCategory.children.push(new TreeviewItem({ text: 'Mushroom', value: 23 }
 vegetableCategory.correctChecked(); // need this to make 'Vegetable' node to change checked value from true to false
  ```
 
-Please checkout my demo for all of funtionality.
+#### TreeviewEventParser:
+Extract data from list of checked TreeviewItem and send it in parameter of event selectedChange. Some built-in TreeviewEventParser:
+* DefaultTreeviewEventParser: return values of checked items.
+* DownlineTreeviewEventParser: return list of checked items in orginal order with their ancestors.
+* OrderDownlineTreeviewEventParser: return list of checked items in checked order with their ancestors.
 
 ## Contributing
 

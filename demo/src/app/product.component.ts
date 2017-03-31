@@ -2,7 +2,7 @@ import { Component, Injectable, OnInit } from '@angular/core';
 import * as _ from 'lodash';
 import {
     TreeviewI18n, TreeviewItem, TreeviewConfig,
-    TreeviewEventParser, DownlineTreeviewEventParser, DownlineTreeviewItem
+    TreeviewEventParser, OrderDownlineTreeviewEventParser, DownlineTreeviewItem
 } from 'ng2-dropdown-treeview';
 import { AppService } from './app.service';
 
@@ -21,7 +21,8 @@ export class ProductTreeviewConfig extends TreeviewConfig {
     <div class="col-6">
         <div class="form-group">
             <div class="d-inline-block">
-                <leo-treeview [items]="items" (selectedChange)="onSelectedChange($event)"></leo-treeview>
+                <leo-treeview [items]="items" (selectedChange)="onSelectedChange($event)">
+                </leo-treeview>
             </div>
         </div>
     </div>
@@ -33,7 +34,7 @@ export class ProductTreeviewConfig extends TreeviewConfig {
     </div>
 </div>
 `, providers: [
-        { provide: TreeviewEventParser, useClass: DownlineTreeviewEventParser },
+        { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
         { provide: TreeviewConfig, useClass: ProductTreeviewConfig }
     ]
 })
@@ -47,6 +48,10 @@ export class ProductComponent implements OnInit {
 
     ngOnInit() {
         this.items = this.appService.getProducts();
+    }
+
+    onItemCheckedChange(item: TreeviewItem) {
+        console.log(item);
     }
 
     onSelectedChange(downlineItems: DownlineTreeviewItem[]) {

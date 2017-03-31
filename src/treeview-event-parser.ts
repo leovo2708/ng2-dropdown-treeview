@@ -28,7 +28,7 @@ export interface DownlineTreeviewItem {
 @Injectable()
 export class DownlineTreeviewEventParser extends TreeviewEventParser {
     getSelectedChange(component: TreeviewComponent): any[] {
-        const items = component.filterItems;
+        const items = component.items;
         if (!_.isNil(items)) {
             let result: DownlineTreeviewItem[] = [];
             items.forEach(item => {
@@ -69,5 +69,40 @@ export class DownlineTreeviewEventParser extends TreeviewEventParser {
         }
 
         return null;
+    }
+}
+
+@Injectable()
+export class OrderDownlineTreeviewEventParser extends TreeviewEventParser {
+    private static currentDownlines: DownlineTreeviewItem[] = [];
+    private static parser = new DownlineTreeviewEventParser();
+
+    getSelectedChange(component: TreeviewComponent): any[] {
+        const parser = OrderDownlineTreeviewEventParser.parser;
+        const currentDownlines = OrderDownlineTreeviewEventParser.currentDownlines;
+        const newDownlines: DownlineTreeviewItem[] = parser.getSelectedChange(component);
+        if (currentDownlines.length === 0) {
+            OrderDownlineTreeviewEventParser.currentDownlines = newDownlines;
+        } else {
+            const intersectDownlines: DownlineTreeviewItem[] = [];
+            currentDownlines.forEach(downline => {
+                let foundIndex = -1;
+                const length = newDownlines.length;
+                for (let i = 0; i < length; i++) {
+                    if (downline.item.value === newDownlines[i].item.value) {
+                        foundIndex = i;
+                    }
+                }
+
+                if (foundIndex !== -1) {
+                    intersectDownlines.push(newDownlines[foundIndex]);
+                    newDownlines.splice(foundIndex, 1);
+                }
+            });
+
+            OrderDownlineTreeviewEventParser.currentDownlines = intersectDownlines.concat(newDownlines);
+        }
+
+        return OrderDownlineTreeviewEventParser.currentDownlines;
     }
 }
