@@ -74,18 +74,16 @@ export class DownlineTreeviewEventParser extends TreeviewEventParser {
 
 @Injectable()
 export class OrderDownlineTreeviewEventParser extends TreeviewEventParser {
-    private static currentDownlines: DownlineTreeviewItem[] = [];
-    private static parser = new DownlineTreeviewEventParser();
+    private currentDownlines: DownlineTreeviewItem[] = [];
+    private parser = new DownlineTreeviewEventParser();
 
     getSelectedChange(component: TreeviewComponent): any[] {
-        const parser = OrderDownlineTreeviewEventParser.parser;
-        const currentDownlines = OrderDownlineTreeviewEventParser.currentDownlines;
-        const newDownlines: DownlineTreeviewItem[] = parser.getSelectedChange(component);
-        if (currentDownlines.length === 0) {
-            OrderDownlineTreeviewEventParser.currentDownlines = newDownlines;
+        const newDownlines: DownlineTreeviewItem[] = this.parser.getSelectedChange(component);
+        if (this.currentDownlines.length === 0) {
+            this.currentDownlines = newDownlines;
         } else {
             const intersectDownlines: DownlineTreeviewItem[] = [];
-            currentDownlines.forEach(downline => {
+            this.currentDownlines.forEach(downline => {
                 let foundIndex = -1;
                 const length = newDownlines.length;
                 for (let i = 0; i < length; i++) {
@@ -100,9 +98,9 @@ export class OrderDownlineTreeviewEventParser extends TreeviewEventParser {
                 }
             });
 
-            OrderDownlineTreeviewEventParser.currentDownlines = intersectDownlines.concat(newDownlines);
+            this.currentDownlines = intersectDownlines.concat(newDownlines);
         }
 
-        return OrderDownlineTreeviewEventParser.currentDownlines;
+        return this.currentDownlines;
     }
 }

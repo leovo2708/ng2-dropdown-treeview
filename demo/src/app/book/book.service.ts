@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TreeviewItem } from 'ng2-dropdown-treeview';
 
-export class AppService {
+export class BookService {
     getBooks(): TreeviewItem[] {
         const childrenCategory = new TreeviewItem({
             text: 'Children', value: 1, collapsed: true, children: [
@@ -43,23 +43,5 @@ export class AppService {
         });
         const othersCategory = new TreeviewItem({ text: 'Others', value: 3, collapsed: true, disabled: true });
         return [childrenCategory, itCategory, teenCategory, othersCategory];
-    }
-
-    getProducts(): TreeviewItem[] {
-        const fruitCategory = new TreeviewItem({
-            text: 'Fruit', value: 1, children: [
-                { text: 'Apple', value: 11 },
-                { text: 'Mango', value: 12 }
-            ]
-        });
-        const vegetableCategory = new TreeviewItem({
-            text: 'Vegetable', value: 2, children: [
-                { text: 'Salad', value: 21 },
-                { text: 'Potato', value: 22 }
-            ]
-        });
-        vegetableCategory.children.push(new TreeviewItem({ text: 'Mushroom', value: 23, checked: false }));
-        vegetableCategory.correctChecked(); // need this to make 'Vegetable' node to change checked value from true to false
-        return [fruitCategory, vegetableCategory];
     }
 }

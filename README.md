@@ -128,7 +128,7 @@ vegetableCategory.correctChecked(); // need this to make 'Vegetable' node to cha
 Extract data from list of checked TreeviewItem and send it in parameter of event selectedChange. Some built-in TreeviewEventParser:
 * DefaultTreeviewEventParser: return values of checked items.
 * DownlineTreeviewEventParser: return list of checked items in orginal order with their ancestors.
-* OrderDownlineTreeviewEventParser: return list of checked items in checked order with their ancestors.
+* OrderDownlineTreeviewEventParser: return list of checked items in checked order with their ancestors. Note that: value of a leaf must be different from value of other leaves.
 
 ## Contributing
 

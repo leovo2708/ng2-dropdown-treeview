@@ -4,7 +4,7 @@ import {
     TreeviewI18n, TreeviewItem, TreeviewConfig,
     TreeviewEventParser, OrderDownlineTreeviewEventParser, DownlineTreeviewItem
 } from 'ng2-dropdown-treeview';
-import { AppService } from './app.service';
+import { ProductService } from './product.service';
 
 @Injectable()
 export class ProductTreeviewConfig extends TreeviewConfig {
@@ -34,6 +34,7 @@ export class ProductTreeviewConfig extends TreeviewConfig {
     </div>
 </div>
 `, providers: [
+        ProductService,
         { provide: TreeviewEventParser, useClass: OrderDownlineTreeviewEventParser },
         { provide: TreeviewConfig, useClass: ProductTreeviewConfig }
     ]
@@ -43,11 +44,11 @@ export class ProductComponent implements OnInit {
     rows: string[];
 
     constructor(
-        private appService: AppService
+        private service: ProductService
     ) { }
 
     ngOnInit() {
-        this.items = this.appService.getProducts();
+        this.items = this.service.getProducts();
     }
 
     onItemCheckedChange(item: TreeviewItem) {
