@@ -59,22 +59,21 @@ class CityTreeviewI18n extends DefaultTreeviewI18n {
     selector: 'leo-city',
     template: `
 <div class="row">
-		<div class="col-12">
-			<div class="alert alert-success" role="alert">
-		        Selected cities: {{cityValue | json}}
-		    </div>
-		</div>
-		<div class="col-12">
-			<div class="form-group row">
-				<label for="city-category" class="col-3 col-form-label">City category</label>
-				<div class="col-9">
-					<leo-dropdown-treeview [items]="cities | leoTreeview:'name'"
-                        (selectedChange)="cityValue = $event">
-                    </leo-dropdown-treeview>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-12">
+        <div class="alert alert-success" role="alert">
+            Selected cities: {{cityValue | json}}
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group row">
+            <label for="city-category" class="col-3 col-form-label">City category</label>
+            <div class="col-9">
+                <leo-dropdown-treeview [items]="cities | leoTreeview:'name'" (selectedChange)="cityValue = $event">
+                </leo-dropdown-treeview>
+            </div>
+        </div>
+    </div>
+</div>
 `, providers: [
         { provide: TreeviewI18n, useClass: CityTreeviewI18n }
     ]
@@ -94,6 +93,11 @@ export class CityComponent {
                 id: 2,
                 name: 'Ha Noi',
                 postCode: 100000
+            },
+            {
+                id: 3,
+                name: 'Da Nang',
+                postCode: 550000
             }
         ];
     }

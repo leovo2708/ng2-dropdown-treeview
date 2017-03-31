@@ -1,17 +1,18 @@
-import { Component, Injectable, NgModule } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import * as _ from 'lodash';
 import { TreeviewConfig, TreeviewItem, TreeviewI18n } from 'ng2-dropdown-treeview';
 import { I18n } from './i18n';
 import { DefaultTreeviewI18n } from './default-treeview-i18n';
+import { AppService } from './app.service';
 
 @Component({
     selector: 'leo-app',
     template: `
 <div class="container">
-	<h2>Angular 2 dropdown-treeview component demo</h2>
-	<hr />
-	<br />
+    <h2>Angular 2 dropdown-treeview component demo</h2>
+    <hr />
+    <br />
     <div class="row">
         <label for="item-category" class="col-3 col-form-label">Language</label>
         <div class="col-9">
@@ -27,77 +28,63 @@ import { DefaultTreeviewI18n } from './default-treeview-i18n';
     </div>
     <hr>
     <h4>Example 1: Primary features</h4>
-	<div class="row">
-		<div class="col-12">
-			<div class="alert alert-success" role="alert">
-		        Selected books: {{bookValue}}
-		    </div>
-		</div>
-		<div class="col-12">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-success" role="alert">
+                Selected books: {{bookValue}}
+            </div>
+        </div>
+        <div class="col-12">
             <div class="form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" type="checkbox" [(ngModel)]="enableDropdownButton">
                     Check/uncheck to enable/disable dropdown button
                 </label>
             </div>
-			<div class="form-group row">
-				<label for="book-category" class="col-3 col-form-label">Book category</label>
-				<div class="col-9">
-					<leo-dropdown-treeview [config]="bookConfig" [items]="bookItems" (selectedChange)="bookValue = $event"
+            <div class="form-group row">
+                <label for="book-category" class="col-3 col-form-label">Book category</label>
+                <div class="col-9">
+                    <leo-dropdown-treeview [config]="bookConfig" [items]="bookItems" (selectedChange)="bookValue = $event"
                         [disabled]="!enableDropdownButton" [leoDisabledOnSelector]="'button.dropdown-toggle'">
                     </leo-dropdown-treeview>
-				</div>
-			</div>
-		</div>
-	</div>
-	<br />
-	<h4>Example 2: Using pipe & i18n</h4>
-    <leo-city></leo-city>
-	<br />
-	<h4>Example 3: 1000 items</h4>
-	<div class="row">
-		<div class="col-12">
-			<div class="alert alert-success" role="alert">
-		        Selected items: {{itemValue}}
-		    </div>
-		</div>
-		<div class="col-12">
-			<div class="form-group row">
-				<label for="item-category" class="col-3 col-form-label">Item category</label>
-				<div class="col-9">
-					<leo-dropdown-treeview [config]="itemConfig" [items]="items" (selectedChange)="itemValue = $event">
-                    </leo-dropdown-treeview>
-				</div>
-			</div>
-		</div>
-	</div>
-	<br />
-	<h4>Example 4: Tree-view without drop-down</h4>
-	<div class="row">
-		<div class="col-12">
-			<div class="alert alert-success" role="alert">
-		        Selected items: {{bookValue2}}
-		    </div>
-		</div>
-		<div class="col-12">
-			<div class="form-group">
-                <div class="d-inline-block">
-                    <leo-treeview [items]="bookItems2" [config]="bookConfig2" (selectedChange)="bookValue2 = $event"></leo-treeview>
                 </div>
             </div>
-		</div>
-	</div>
+        </div>
+    </div>
+    <br />
+    <h4>Example 2: 1000 items</h4>
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-success" role="alert">
+                Selected items: {{itemValue}}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group row">
+                <label for="item-category" class="col-3 col-form-label">Item category</label>
+                <div class="col-9">
+                    <leo-dropdown-treeview [config]="itemConfig" [items]="items" (selectedChange)="itemValue = $event">
+                    </leo-dropdown-treeview>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <h4>Example 3: Using pipe & i18n</h4>
+    <leo-city></leo-city>
+    <br />
+    <h4>Example 4: Tree-view without drop-down & custom TreeviewConfig & custom TreeviewEventParser</h4>
+    <leo-product></leo-product>
 </div>
   `,
     providers: [
         { provide: TreeviewI18n, useClass: DefaultTreeviewI18n }
     ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     enableDropdownButton = true;
 
-    // example 1
-    bookItems = this.createBooks();
+    bookItems: TreeviewItem[];
     bookValue: number[];
     bookConfig: TreeviewConfig = {
         isShowAllCheckBox: true,
@@ -106,9 +93,6 @@ export class AppComponent {
         maxHeight: 500
     };
 
-    // example 2
-
-    // example 3
     items = this.createItems();
     itemValue: any[];
     itemConfig: TreeviewConfig = {
@@ -118,18 +102,9 @@ export class AppComponent {
         maxHeight: 500
     };
 
-    // example 4
-    bookItems2 = this.createBooks2();
-    bookValue2: number[];
-    bookConfig2: TreeviewConfig = {
-        isShowAllCheckBox: true,
-        isShowFilter: true,
-        isShowCollapseExpand: true,
-        maxHeight: 500
-    };
-
     constructor(
-        private i18n: I18n
+        private i18n: I18n,
+        private service: AppService
     ) { }
 
     set language(language: string) {
@@ -140,47 +115,12 @@ export class AppComponent {
         return this.i18n.language;
     }
 
+    ngOnInit() {
+        this.bookItems = this.createBooks();
+    }
+
     private createBooks(): TreeviewItem[] {
-        const childrenCategory = new TreeviewItem({
-            text: 'Children', value: 1, collapsed: true, children: [
-                { text: 'Baby 3-5', value: 11 },
-                { text: 'Baby 6-8', value: 12 },
-                { text: 'Baby 9-12', value: 13 }
-            ]
-        });
-        const itCategory = new TreeviewItem({
-            text: 'IT', value: 9, children: [
-                {
-                    text: 'Programming', value: 91, children: [{
-                        text: 'Frontend', value: 911, children: [
-                            { text: 'Angular 1', value: 9111 },
-                            { text: 'Angular 2', value: 9112 },
-                            { text: 'ReactJS', value: 9113 }
-                        ]
-                    }, {
-                        text: 'Backend', value: 912, children: [
-                            { text: 'C#', value: 9121 },
-                            { text: 'Java', value: 9122 },
-                            { text: 'Python', value: 9123, checked: false }
-                        ]
-                    }]
-                },
-                {
-                    text: 'Networking', value: 92, children: [
-                        { text: 'Internet', value: 921 },
-                        { text: 'Security', value: 922 }
-                    ]
-                }
-            ]
-        });
-        const teenCategory = new TreeviewItem({
-            text: 'Teen', value: 2, collapsed: true, disabled: true, children: [
-                { text: 'Adventure', value: 21 },
-                { text: 'Science', value: 22 }
-            ]
-        });
-        const othersCategory = new TreeviewItem({ text: 'Others', value: 3, collapsed: true, disabled: true });
-        return [childrenCategory, itCategory, teenCategory, othersCategory];
+        return this.service.getBooks();
     }
 
     private createItems(): TreeviewItem[] {
@@ -192,15 +132,5 @@ export class AppComponent {
             items.push(item);
         };
         return items;
-    }
-
-    private createBooks2(): TreeviewItem[] {
-        const books = this.createBooks();
-        const itBooks = books[1];
-        const programmingBooks = itBooks.children[0];
-        const frontendBooks = programmingBooks.children[0];
-        frontendBooks.children.push(new TreeviewItem({ text: 'jQuery', value: 9114, checked: false }));
-        itBooks.correctChecked(); // need this to make 'Frontend' node to change checked value from true to false
-        return books;
     }
 }
