@@ -120,7 +120,7 @@ const vegetableCategory = new TreeviewItem({
         { text: 'Potato', value: 22 }
     ]
 });
-vegetableCategory.children.push(new TreeviewItem({ text: 'Mushroom', value: 23 }));
+vegetableCategory.children.push(new TreeviewItem({ text: 'Mushroom', value: 23, checked: false }));
 vegetableCategory.correctChecked(); // need this to make 'Vegetable' node to change checked value from true to false
  ```
 

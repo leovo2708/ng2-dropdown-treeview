@@ -21,9 +21,11 @@ import { BookService } from './book.service';
         <div class="form-group row">
             <label for="book-category" class="col-3 col-form-label">Book category</label>
             <div class="col-9">
-                <leo-dropdown-treeview [config]="config" [items]="items" (selectedChange)="values = $event"
-                    [disabled]="!enableButton" [leoDisabledOnSelector]="'button.dropdown-toggle'">
-                </leo-dropdown-treeview>
+                <div class="d-inline-block">
+                    <leo-dropdown-treeview [config]="config" [items]="items" (selectedChange)="values = $event"
+                        [disabled]="!enableButton" [leoDisabledOnSelector]="'button.dropdown-toggle'">
+                    </leo-dropdown-treeview>
+                </div>
             </div>
         </div>
     </div>

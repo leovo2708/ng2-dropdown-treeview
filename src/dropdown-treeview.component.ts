@@ -27,6 +27,7 @@ import { TreeviewComponent } from './treeview.component';
 }
 .dropdown button {
     width: 100%;
+    margin-right: .9rem;
     text-align: left;
 }
 .dropdown button::after {
