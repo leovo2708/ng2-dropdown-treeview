@@ -1,9 +1,10 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, TemplateRef } from '@angular/core';
 import * as _ from 'lodash';
 import { TreeviewI18n } from './treeview-i18n';
 import { TreeviewItem } from './treeview-item';
 import { TreeviewConfig } from './treeview-config';
 import { TreeviewEventParser } from './treeview-event-parser';
+import { TreeviewItemTemplateContext } from './treeview-item-template-context';
 
 class FilterTreeviewItem extends TreeviewItem {
     private readonly refItem: TreeviewItem;
@@ -48,6 +49,17 @@ class FilterTreeviewItem extends TreeviewItem {
 @Component({
     selector: 'leo-treeview',
     template: `
+<template #tpl let-item="item"
+    let-toggleCollapseExpand="toggleCollapseExpand"
+    let-onCheckedChange="onCheckedChange">
+    <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
+        class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+    <label class="form-check-label">
+        <input type="checkbox" class="form-check-input"
+            [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" />
+        {{item.text}}
+    </label>
+</template>
 <div class="treeview-header">
     <div *ngIf="config.isShowFilter" class="row">
         <div class="col-12">
@@ -74,7 +86,8 @@ class FilterTreeviewItem extends TreeviewItem {
 </div>
 <div class="treeview-container" [style.max-height.px]="maxHeight">
     <div *ngFor="let item of filterItems">
-        <leo-treeview-item [item]="item" (checkedChange)="onItemCheckedChange(item, $event)"></leo-treeview-item>
+        <leo-treeview-item [item]="item" [template]="template || tpl" (checkedChange)="onItemCheckedChange(item, $event)">
+        </leo-treeview-item>
     </div>
 </div>
 <div *ngIf="!hasFilterItems" class="treeview-text">
@@ -109,6 +122,7 @@ class FilterTreeviewItem extends TreeviewItem {
 `]
 })
 export class TreeviewComponent implements OnChanges {
+    @Input() template: TemplateRef<TreeviewItemTemplateContext>;
     @Input() items: TreeviewItem[];
     @Input() config: TreeviewConfig;
     @Output() selectedChange = new EventEmitter<any[]>();

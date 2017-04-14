@@ -1,49 +1,50 @@
-﻿import { Component, EventEmitter, Input, Output } from '@angular/core';
+﻿import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import * as _ from 'lodash';
 import { TreeviewItem } from './treeview-item';
+import { TreeviewItemTemplateContext } from './treeview-item-template-context';
 
 @Component({
     selector: 'leo-treeview-item',
     template: `
-<div class="treeview-item" [class.treeview-parent]="item.children">
-    <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
-        class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
-    <label class="form-check-label">
-        <input type="checkbox" class="form-check-input"
-            [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange($event)" [disabled]="item.disabled" />
-        {{item.text}}
-    </label>
+<div class="treeview-item">
+    <template [ngTemplateOutlet]="template"
+        [ngOutletContext]="{item: item, toggleCollapseExpand: toggleCollapseExpand, onCheckedChange: onCheckedChange}">
+    </template>
     <div *ngIf="!item.collapsed">
-        <leo-treeview-item *ngFor="let child of item.children" [item]="child" (checkedChange)="onChildCheckedChange(child, $event)">
+        <leo-treeview-item *ngFor="let child of item.children" [item]="child" [template]="template"
+            (checkedChange)="onChildCheckedChange(child, $event)">
         </leo-treeview-item>
     </div>
 </div>
     `,
     styles: [`
+:host {
+    display: block;
+}
+:host /deep/ .fa {
+    margin-right: .2rem;
+    cursor: pointer;
+}
 .treeview-item {
-    padding-left: 1rem;
+    padding: .2rem;
     white-space: nowrap;
 }
-.treeview-item .form-check-label {
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-.treeview-item .fa {
-    margin-left: -1.0rem;
-    width: 10px;
-    cursor: pointer;
+.treeview-item .treeview-item {
+    margin-left: 2rem;
 }
     `]
 })
 export class TreeviewItemComponent {
+    @Input() template: TemplateRef<TreeviewItemTemplateContext>;
     @Input() item: TreeviewItem;
     @Output() checkedChange = new EventEmitter<boolean>();
 
-    toggleCollapseExpand() {
+    toggleCollapseExpand = () => {
         this.item.collapsed = !this.item.collapsed;
     }
 
-    onCheckedChange(checked: boolean) {
+    onCheckedChange = () => {
+        const checked = this.item.checked;
         if (!_.isNil(this.item.children)) {
             this.item.children.forEach(child => child.setCheckedRecursive(checked));
         }

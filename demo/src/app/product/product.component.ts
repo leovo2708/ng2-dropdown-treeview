@@ -17,11 +17,22 @@ export class ProductTreeviewConfig extends TreeviewConfig {
 @Component({
     selector: 'leo-product',
     template: `
+<template #tpl let-item="item"
+    let-toggleCollapseExpand="toggleCollapseExpand"
+    let-onCheckedChange="onCheckedChange">
+    <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
+        class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+    <label class="form-check-label">
+        <input type="checkbox" class="form-check-input"
+            [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" />
+        {{item.text}} ({{item.value}})
+    </label>
+</template>
 <div class="row">
     <div class="col-6">
         <div class="form-group">
             <div class="d-inline-block">
-                <leo-treeview [items]="items" (selectedChange)="onSelectedChange($event)">
+                <leo-treeview [items]="items" [template]="tpl" (selectedChange)="onSelectedChange($event)">
                 </leo-treeview>
             </div>
         </div>

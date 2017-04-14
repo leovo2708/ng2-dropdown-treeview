@@ -5,6 +5,17 @@ import { BookService } from './book.service';
 @Component({
     selector: 'leo-book',
     template: `
+<template #tpl let-item="item"
+    let-toggleCollapseExpand="toggleCollapseExpand"
+    let-onCheckedChange="onCheckedChange">
+    <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
+        class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+    <label class="form-check-label">
+        <input type="checkbox" class="form-check-input"
+            [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" />
+            {{item.text}}<span *ngIf="item.children"> ({{item.children.length}})</span>
+    </label>
+</template>
 <div class="row">
     <div class="col-12">
         <div class="alert alert-success" role="alert">
@@ -23,7 +34,7 @@ import { BookService } from './book.service';
             <div class="col-9">
                 <div class="d-inline-block">
                     <leo-dropdown-treeview [config]="config" [items]="items" (selectedChange)="values = $event"
-                        [disabled]="!enableButton" [leoDisabledOnSelector]="'button.dropdown-toggle'">
+                        [template]="tpl" [disabled]="!enableButton" [leoDisabledOnSelector]="'button.dropdown-toggle'">
                     </leo-dropdown-treeview>
                 </div>
             </div>

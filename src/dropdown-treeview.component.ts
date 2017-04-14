@@ -1,9 +1,10 @@
-﻿import { Component, EventEmitter, Input, Output, HostListener, ViewChild } from '@angular/core';
+﻿import { Component, EventEmitter, Input, Output, HostListener, ViewChild, TemplateRef } from '@angular/core';
 import * as _ from 'lodash';
 import { TreeviewI18n } from './treeview-i18n';
 import { TreeviewItem } from './treeview-item';
 import { TreeviewConfig } from './treeview-config';
 import { TreeviewComponent } from './treeview.component';
+import { TreeviewItemTemplateContext } from './treeview-item-template-context';
 
 @Component({
     selector: 'leo-dropdown-treeview',
@@ -15,7 +16,8 @@ import { TreeviewComponent } from './treeview.component';
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" (click)="$event.stopPropagation()">
         <div class="dropdown-container">
-            <leo-treeview [items]="items" [config]="config" (selectedChange)="onSelectedChange($event)"></leo-treeview>
+            <leo-treeview [items]="items" [template]="template" [config]="config" (selectedChange)="onSelectedChange($event)">
+            </leo-treeview>
         </div>
     </div>
 </div>
@@ -47,6 +49,7 @@ import { TreeviewComponent } from './treeview.component';
     `]
 })
 export class DropdownTreeviewComponent {
+    @Input() template: TemplateRef<TreeviewItemTemplateContext>;
     @Input() items: TreeviewItem[];
     @Input() config: TreeviewConfig;
     @Output() hide = new EventEmitter();

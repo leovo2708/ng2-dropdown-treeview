@@ -6,3 +6,4 @@ export * from './src/treeview-item';
 export * from './src/treeview-config';
 export * from './src/treeview-i18n';
 export * from './src/treeview-event-parser';
+export * from './src/treeview-item-template-context';

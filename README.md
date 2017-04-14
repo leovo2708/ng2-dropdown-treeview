@@ -130,6 +130,9 @@ Extract data from list of checked TreeviewItem and send it in parameter of event
 * DownlineTreeviewEventParser: return list of checked items in orginal order with their ancestors.
 * OrderDownlineTreeviewEventParser: return list of checked items in checked order with their ancestors. Note that: value of a leaf must be different from value of other leaves.
 
+#### TreeviewItem Template:
+See example 1 & 4.
+
 ## Contributing
 
 I am very appreciate for your ideas, proposals and found bugs which you can leave in github issues. Thanks in advance!
