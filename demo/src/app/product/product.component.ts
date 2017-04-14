@@ -1,7 +1,7 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild } from '@angular/core';
 import * as _ from 'lodash';
 import {
-    TreeviewI18n, TreeviewItem, TreeviewConfig,
+    TreeviewI18n, TreeviewItem, TreeviewConfig, TreeviewHelper, TreeviewComponent,
     TreeviewEventParser, OrderDownlineTreeviewEventParser, DownlineTreeviewItem
 } from 'ng2-dropdown-treeview';
 import { ProductService } from './product.service';
@@ -25,8 +25,9 @@ export class ProductTreeviewConfig extends TreeviewConfig {
     <label class="form-check-label">
         <input type="checkbox" class="form-check-input"
             [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" />
-        {{item.text}} ({{item.value}})
+        {{item.text}}
     </label>
+    <label><i class="fa fa-trash" aria-hidden="true" title="Remove" (click)="removeItem(item)"></i></label>
 </template>
 <div class="row">
     <div class="col-6">
@@ -51,6 +52,7 @@ export class ProductTreeviewConfig extends TreeviewConfig {
     ]
 })
 export class ProductComponent implements OnInit {
+    @ViewChild(TreeviewComponent) treeviewComponent: TreeviewComponent;
     items: TreeviewItem[];
     rows: string[];
 
@@ -81,5 +83,10 @@ export class ProductComponent implements OnInit {
             const row = `${reverseTexts.join(' -> ')} : ${value}`;
             this.rows.push(row);
         });
+    }
+
+    removeItem(item: TreeviewItem) {
+        TreeviewHelper.removeItem(item, this.items);
+        this.treeviewComponent.raiseSelectedChange();
     }
 }

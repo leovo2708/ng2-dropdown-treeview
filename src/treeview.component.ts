@@ -205,6 +205,10 @@ export class TreeviewComponent implements OnChanges {
         this.onAfterSelectedChange();
     }
 
+    raiseSelectedChange() {
+        this.onAfterSelectedChange();
+    }
+
     private getCheckedItems(): TreeviewItem[] {
         let checkedItems: TreeviewItem[] = [];
         if (!_.isNil(this.items)) {

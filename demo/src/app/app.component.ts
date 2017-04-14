@@ -33,7 +33,7 @@ import { DefaultTreeviewI18n } from './default-treeview-i18n';
     <h4>Example 3: Using pipe & i18n</h4>
     <leo-city></leo-city>
     <br />
-    <h4>Example 4: Tree-view without drop-down & custom TreeviewConfig & custom TreeviewEventParser</h4>
+    <h4>Example 4: Tree-view without drop-down & custom TreeviewConfig & custom TreeviewEventParser & custom template</h4>
     <leo-product></leo-product>
 </div>
   `,

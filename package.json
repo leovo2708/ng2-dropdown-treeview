@@ -1,6 +1,6 @@
 {
   "name": "ng2-dropdown-treeview",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "An Angular 2 tree component with checkbox and multiple level",
   "scripts": {
     "sass": "node-sass src -o src --output-style=expanded --indent-width=4",
