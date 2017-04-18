@@ -20,14 +20,18 @@ export class ProductTreeviewConfig extends TreeviewConfig {
 <template #tpl let-item="item"
     let-toggleCollapseExpand="toggleCollapseExpand"
     let-onCheckedChange="onCheckedChange">
-    <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
-        class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
-    <label class="form-check-label">
-        <input type="checkbox" class="form-check-input"
-            [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" />
-        {{item.text}}
-    </label>
-    <label><i class="fa fa-trash" aria-hidden="true" title="Remove" (click)="removeItem(item)"></i></label>
+    <div class="form-check">
+        <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
+            class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+        <label class="form-check-label">
+            <input type="checkbox" class="form-check-input"
+                [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" />
+            {{item.text}}
+        </label>
+        <label class="form-check-label">
+            <i class="fa fa-trash" aria-hidden="true" title="Remove" (click)="removeItem(item)"></i>
+        </label>
+    </div>
 </template>
 <div class="row">
     <div class="col-6">

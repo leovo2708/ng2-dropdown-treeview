@@ -18,6 +18,7 @@ You can customize CSS yourself to break down dependencies to Bootstrap & Font Aw
 * Collapse / Expand
 * Text filtering
 * Internationalization (i18n) support
+* Template
 
 ## Demo
 

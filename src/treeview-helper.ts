@@ -37,6 +37,8 @@ function removeItem(x: TreeviewItem, items: TreeviewItem[]) {
         _.pull(parent.children, x);
         if (parent.children.length === 0) {
             parent.children = undefined;
+        } else {
+            parent.correctChecked();
         }
     } else {
         _.pull(items, x);

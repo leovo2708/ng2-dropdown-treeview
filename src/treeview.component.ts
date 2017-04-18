@@ -52,13 +52,15 @@ class FilterTreeviewItem extends TreeviewItem {
 <template #tpl let-item="item"
     let-toggleCollapseExpand="toggleCollapseExpand"
     let-onCheckedChange="onCheckedChange">
-    <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
-        class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
-    <label class="form-check-label">
-        <input type="checkbox" class="form-check-input"
-            [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" />
-        {{item.text}}
-    </label>
+    <div class="form-check">
+        <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
+            class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
+        <label class="form-check-label">
+            <input type="checkbox" class="form-check-input"
+                [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" />
+            {{item.text}}
+        </label>
+    </div>
 </template>
 <div class="treeview-header">
     <div *ngIf="config.isShowFilter" class="row">
@@ -116,7 +118,7 @@ class FilterTreeviewItem extends TreeviewItem {
     padding-right: 18px;
 }
 .treeview-text {
-    padding: 3px 0;
+    padding: .3rem 0;
     white-space: nowrap;
 }
 `]
@@ -157,7 +159,7 @@ export class TreeviewComponent implements OnChanges {
         if (!_.isNil(itemsSimpleChange)) {
             this.updateFilterItems();
             this.updateCollapsedAll();
-            this.onAfterSelectedChange();
+            this.raiseSelectedChange();
         }
     }
 
@@ -180,7 +182,7 @@ export class TreeviewComponent implements OnChanges {
             }
         });
 
-        this.onAfterSelectedChange();
+        this.raiseSelectedChange();
     }
 
     onItemCheckedChange(item: TreeviewItem, checked: boolean) {
@@ -202,11 +204,13 @@ export class TreeviewComponent implements OnChanges {
             item.updateRefChecked();
         }
 
-        this.onAfterSelectedChange();
+        this.raiseSelectedChange();
     }
 
     raiseSelectedChange() {
-        this.onAfterSelectedChange();
+        this.checkedItems = this.getCheckedItems();
+        const values = this.eventParser.getSelectedChange(this);
+        this.selectedChange.emit(values);
     }
 
     private getCheckedItems(): TreeviewItem[] {
@@ -218,12 +222,6 @@ export class TreeviewComponent implements OnChanges {
         }
 
         return checkedItems;
-    }
-
-    private onAfterSelectedChange() {
-        this.checkedItems = this.getCheckedItems();
-        const values = this.eventParser.getSelectedChange(this);
-        this.selectedChange.emit(values);
     }
 
     private updateFilterItems() {

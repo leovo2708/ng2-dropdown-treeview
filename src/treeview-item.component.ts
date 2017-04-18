@@ -23,10 +23,10 @@ import { TreeviewItemTemplateContext } from './treeview-item-template-context';
 }
 :host /deep/ .fa {
     margin-right: .2rem;
+    width: .5rem;
     cursor: pointer;
 }
 .treeview-item {
-    padding: .2rem;
     white-space: nowrap;
 }
 .treeview-item .treeview-item {
