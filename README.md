@@ -2,6 +2,11 @@
 
 An Angular 2 tree component with checkbox and multiple level.
 
+> This component is discontinued anymore. It's compatible with both Angular 2 & 4.  
+> **But if you are using Angular 4, should switch to my new component [ngx-treeview](https://www.npmjs.com/package/ngx-treeview)**
+
+<br/>
+
 ## Dependencies
 
 * [Angular 2](https://angular.io)
